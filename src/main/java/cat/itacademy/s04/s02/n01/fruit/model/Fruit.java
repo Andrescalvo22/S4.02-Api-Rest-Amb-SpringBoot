@@ -28,7 +28,7 @@ public class Fruit {
         return name;
     }
 
-    public int getWeight() {
+    public int getWeightInKilos() {
         return weightInKilos;
     }
 
@@ -40,7 +40,7 @@ public class Fruit {
         this.name = name;
     }
 
-    public void setWeight(int weightInKilos) {
+    public void setWeightInKilos(int weightInKilos) {
         this.weightInKilos = weightInKilos;
     }
 }

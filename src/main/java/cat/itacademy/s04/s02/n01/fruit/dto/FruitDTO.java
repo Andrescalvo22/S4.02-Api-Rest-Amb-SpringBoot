@@ -11,7 +11,7 @@ public class FruitDTO {
     private String name;
 
     @NotNull(message = "Weight cannot be null")
-    @Positive(message = "Weight must be positive")
+    @Positive(message = "Weight must be greater than zero")
     private Integer weightInKilos;
 
     public FruitDTO() {}
