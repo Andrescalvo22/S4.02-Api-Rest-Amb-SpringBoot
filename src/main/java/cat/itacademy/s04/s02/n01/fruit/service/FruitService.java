@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class FruitService {
+
     @Autowired
     private FruitRepository fruitRepository;
 
@@ -43,17 +44,19 @@ public class FruitService {
     }
 
     public Optional<FruitDTO> updateFruit(Long id, FruitDTO dto) {
-        return fruitRepository.findById(id).map(fruit -> {
-            fruit.setName(dto.getName());
-            fruit.setWeightInKilos(dto.getWeightInKilos());
-            Fruit updated = fruitRepository.save(fruit);
-            return convertToDTO(updated);
-        });
+        return fruitRepository.findById(id)
+                .map(fruit -> {
+                    fruit.setName(dto.getName());
+                    fruit.setWeightInKilos(dto.getWeightInKilos());
+                    Fruit updated = fruitRepository.save(fruit);
+                    return convertToDTO(updated);
+                });
     }
 
     public void deleteFruit(Long id) {
         fruitRepository.deleteById(id);
     }
 }
+
 
 
