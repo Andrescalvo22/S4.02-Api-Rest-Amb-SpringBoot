@@ -1,28 +1,9 @@
-
-FROM maven:3.9.6-eclipse-temurin-21 AS build
-
-WORKDIR /app
-
-COPY pom.xml .
-RUN mvn -q dependency:go-offline
-
-COPY src ./src
-
-
-RUN mvn -q package -DskipTests
-
-
-FROM eclipse-temurin:21-jre
-
-WORKDIR /app
-
-COPY --from=build /app/target/*.jar app.jar
-
-
-ENV SPRING_DATASOURCE_URL=""
-ENV SPRING_DATASOURCE_USERNAME=""
-ENV SPRING_DATASOURCE_PASSWORD=""
-
+FROM eclipse-temurin:21-jdk-alpine
+VOLUME /tmp
+ARG JAR_FILE=target/fruit-api-h2-0.0.1-SNAPSHOT.jar
+COPY ${JAR_FILE} app.jar
 EXPOSE 8080
+ENTRYPOINT ["java","-jar","/app.jar"]
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
+
