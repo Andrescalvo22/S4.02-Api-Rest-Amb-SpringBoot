@@ -1,6 +1,9 @@
 package cat.itacademy.s04.s02.n01.fruit.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "fruits")
@@ -9,38 +12,15 @@ public class Fruit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Name cannot be blank")
     private String name;
+
+    @Positive(message = "Weight must be positive")
     private int weightInKilos;
 
-    public Fruit(){}
-
-    public Fruit(Long id, String name, int weightInKilos) {
-        this.id = id;
-        this.name = name;
-        this.weightInKilos = weightInKilos;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getWeightInKilos() {
-        return weightInKilos;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setWeightInKilos(int weightInKilos) {
-        this.weightInKilos = weightInKilos;
-    }
+    @ManyToOne
+    @JoinColumn(name = "provider_id", nullable = false)
+    @NotNull(message = "Provider must be assigned")
+    private Provider provider;
 }
