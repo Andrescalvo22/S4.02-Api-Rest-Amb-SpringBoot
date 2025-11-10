@@ -1,8 +1,15 @@
 package cat.itacademy.s04.s02.n01.fruit.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class FruitDTO {
 
     private Long id;
@@ -14,35 +21,6 @@ public class FruitDTO {
     @Positive(message = "Weight must be greater than zero")
     private Integer weightInKilos;
 
-    public FruitDTO() {}
-
-    public FruitDTO(Long id, String name, Integer weightInKilos) {
-        this.id = id;
-        this.name = name;
-        this.weightInKilos = weightInKilos;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getWeightInKilos() {
-        return weightInKilos;
-    }
-
-    public void setWeightInKilos(Integer weightInKilos) {
-        this.weightInKilos = weightInKilos;
-    }
+    @NotNull(message = "Provider ID cannot be null")
+    private Long providerId;
 }

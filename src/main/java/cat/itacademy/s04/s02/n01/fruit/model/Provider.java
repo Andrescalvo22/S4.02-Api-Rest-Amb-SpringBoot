@@ -7,21 +7,28 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
-@Table(name = "providers", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Table(name = "providers")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Provider {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     @NotBlank(message = "Name cannot be blank")
     private String name;
-
     @NotBlank(message = "Country cannot be blank")
     private String country;
 
-    @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "provider")
     private List<Fruit> fruits;
+    public Provider(Long id, String name, String country) {
+        this.id = id;
+        this.name = name;
+        this.country = country;
+    }
 }

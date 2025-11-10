@@ -1,7 +1,10 @@
 package cat.itacademy.s04.s02.n01.fruit;
 
 import cat.itacademy.s04.s02.n01.fruit.dto.FruitDTO;
+import cat.itacademy.s04.s02.n01.fruit.model.Provider;
+import cat.itacademy.s04.s02.n01.fruit.repository.ProviderRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,9 +26,23 @@ public class FruitControllerIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private ProviderRepository providerRepository;
+
+    private Long testProviderId;
+
+    @BeforeEach
+    void setup() {
+        Provider provider = new Provider();
+        provider.setName("Test Provider");
+        provider.setCountry("Spain");
+        Provider saved = providerRepository.save(provider);
+        testProviderId = saved.getId();
+    }
+
     @Test
     void testCreateFruit() throws Exception {
-        FruitDTO dto = new FruitDTO(null, "Apple", 3);
+        FruitDTO dto = new FruitDTO(null, "Apple", 3, testProviderId);
 
         mockMvc.perform(post("/fruits")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -45,7 +62,7 @@ public class FruitControllerIntegrationTest {
 
     @Test
     void testGetFruitById() throws Exception {
-        FruitDTO dto = new FruitDTO(null, "Banana", 2);
+        FruitDTO dto = new FruitDTO(null, "Banana", 2, testProviderId);
         String json = objectMapper.writeValueAsString(dto);
 
         String response = mockMvc.perform(post("/fruits")
@@ -61,7 +78,7 @@ public class FruitControllerIntegrationTest {
 
     @Test
     void testUpdateFruit() throws Exception {
-        FruitDTO dto = new FruitDTO(null, "Orange", 4);
+        FruitDTO dto = new FruitDTO(null, "Orange", 4, testProviderId);
         String json = objectMapper.writeValueAsString(dto);
 
         String response = mockMvc.perform(post("/fruits")
@@ -71,7 +88,7 @@ public class FruitControllerIntegrationTest {
 
         FruitDTO created = objectMapper.readValue(response, FruitDTO.class);
 
-        FruitDTO updated = new FruitDTO(null, "Big Orange", 5);
+        FruitDTO updated = new FruitDTO(null, "Big Orange", 5, testProviderId);
 
         mockMvc.perform(put("/fruits/" + created.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -83,7 +100,7 @@ public class FruitControllerIntegrationTest {
 
     @Test
     void testDeleteFruit() throws Exception {
-        FruitDTO dto = new FruitDTO(null, "Grapes", 1);
+        FruitDTO dto = new FruitDTO(null, "Grapes", 1, testProviderId);
 
         String response = mockMvc.perform(post("/fruits")
                         .contentType(MediaType.APPLICATION_JSON)

@@ -14,8 +14,11 @@ import java.util.List;
 @RequestMapping("/fruits")
 public class FruitController {
 
-    @Autowired
-    private FruitService fruitService;
+    private final FruitService fruitService;
+
+    public FruitController(FruitService fruitService) {
+        this.fruitService = fruitService;
+    }
 
     @PostMapping
     public ResponseEntity<FruitDTO> createFruit(@RequestBody @Valid FruitDTO dto) {
@@ -24,13 +27,18 @@ public class FruitController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FruitDTO>> getAllFruits() {
-        List<FruitDTO> fruits = fruitService.getAllFruits();
+    public ResponseEntity<List<FruitDTO>> getAllFruits(@RequestParam(required = false) Long providerId) {
+        List<FruitDTO> fruits;
+        if (providerId != null) {
+            fruits = fruitService.getFruitsByProviderId(providerId);
+        } else {
+            fruits = fruitService.getAllFruits();
+        }
         return ResponseEntity.ok(fruits);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FruitDTO> getFruitByID(@PathVariable Long id) {
+    public ResponseEntity<FruitDTO> getFruitById(@PathVariable Long id) {
         return fruitService.getFruitById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
